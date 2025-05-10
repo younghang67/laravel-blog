@@ -73,8 +73,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="flex justify-end space-x-3">
                         <a href="{{ route('blogs.index') }}"
                             class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
