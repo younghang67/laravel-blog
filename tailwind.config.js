@@ -7,12 +7,14 @@ export default {
     "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
     "./storage/framework/views/*.php",
     "./resources/views/**/*.blade.php",
+    "./resources/views/**/*.php",
   ],
 
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["OpenSans", "sans-serif"],
+        heading: ["OpenSansCondensed", "sans-serif"],
       },
       borderWidth: {
         1: "1px",

@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
+use App\Traits\GeneralHelpers;
 use Hamcrest\Core\IsEqual;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use phpDocumentor\Reflection\Types\Nullable;
+use Illuminate\Database\QueryException;
+use Exception;
 
 class PostController extends Controller
 {
+    use GeneralHelpers;
     /**
      * Display a listing of the resource.
      */
@@ -62,29 +67,46 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $validateData = $request->validate([
-            'category_id' => 'nullable|exists:categories,id',
-            'title' => 'required|max:255|unique:posts,title,NULL,id,user_id,' . Auth::id(),
+        $user = Auth::user();
+
+        $rules = [
+            'category_id' => 'exists:categories,id',
+            'title' => 'required|max:255',
             'content' => 'required',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:3072',
             'status' => 'required|in:draft,published,archived',
-        ]);
+        ];
 
-        $validateData['user_id'] = Auth::id();
+        $validated = $request->validate($rules);
 
-        if (!$request->filled('category_id')) {
-            $validateData['category_id'] = Category::firstOrCreate(['name' => 'Uncategorized'])->id;
+        try {
+            $validated['user_id'] = Auth::id();
+
+            if (!$request->filled('category_id')) {
+                $validated['category_id'] = Category::firstOrCreate(['name' => 'Uncategorized'])->id;
+            }
+
+            if ($request->hasFile('image_url')) {
+                $validated['image_url'] = $request->file('image_url')->store('posts', 'public');
+            }
+
+            $validated['slug'] = $this->generateSlug(Post::class, $validated['title']);
+
+            Post::create($validated);
+
+            return redirect()->route('blogs.index')->with('success', 'Post created successfully!');
+        } catch (QueryException $e) {
+            return back()->withInput()->withErrors([
+                'db_error' => 'Database error: ' . $e->getMessage()
+            ]);
+        } catch (Exception $e) {
+            return back()->withInput()->withErrors([
+                'general_error' => 'Something went wrong: ' . $e->getMessage()
+            ]);
         }
-
-        if ($request->hasFile('image_url')) {
-            $imagePath = $request->file('image_url')->store('posts', 'public');
-            $validateData['image_url'] = $imagePath;
-        }
-
-        $post = Post::create($validateData);
-
-        return redirect()->route('blogs.index')->with("success", "Post created successfully!");
     }
+
+
 
 
     /**
@@ -125,9 +147,7 @@ class PostController extends Controller
                 'remove_image' => 'sometimes|boolean',
             ]);
 
-            // Handle image upload or deletion
             if ($request->hasFile('image_url')) {
-                // Delete the old image if it exists
                 if ($post->image_url) {
                     Storage::disk('public')->delete($post->image_url);
                 }

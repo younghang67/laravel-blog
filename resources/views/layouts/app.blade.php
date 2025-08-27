@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title }}</title>
+    <title>{{ $title ?? 'BLOGX' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -15,7 +15,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased relative">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         @include('layouts.navigation')
 
@@ -31,7 +31,7 @@
         <!-- Page Content -->
         <main class="flex gap-4 max-w-screen-2xl mx-auto py-12 bg-navy">
             <x-sidebar.dashboard-sidebar />
-            <div class="flex-grow flex-1 relative">
+            <div class="flex-grow flex-1">
                 {{ $slot }}
             </div>
         </main>

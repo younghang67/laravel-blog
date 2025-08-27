@@ -1,4 +1,7 @@
 <x-app-layout title="All category">
+    @if (session('success'))
+        <x-toasts.success :message="session('success')" />
+    @endif
     <div class="flex-1 relative">
         <main class="px-6">
             <div class="flex justify-between items-center mb-6 py-4 px-2 rounded-md bg-white">

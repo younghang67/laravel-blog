@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -30,9 +32,18 @@ class CategoryController extends Controller
             'slug' => 'nullable|unique:categories|max:100',
             'description' => 'nullable'
         ]);
-
-        Category::create($validateData);
-        return redirect()->route('category.index')->with("success", "Category is successfully created");
+        try {
+            Category::create($validateData);
+            return redirect()->route('category.index')->with("success", "Category is successfully created");
+        } catch (QueryException $e) {
+            return back()->withInput()->withErrors([
+                'db_error' => 'Database error: ' . $e->getMessage()
+            ]);
+        } catch (Exception $e) {
+            return back()->withInput()->withErrors([
+                'general_error' => 'Something went wrong: ' . $e->getMessage()
+            ]);
+        }
     }
 
     public function update(Request $request, Category $category)

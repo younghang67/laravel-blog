@@ -1,4 +1,10 @@
 <x-app-layout title="All Posts">
+    @if (session('success'))
+        <x-toasts.success :message="session('success')" />
+    @endif
+    @if (session('error'))
+        <x-toasts.danger :message="$error" />
+    @endif
     <div class="px-6">
         <div class="flex justify-between items-center mb-6 py-4 px-2 rounded-md bg-white">
             <h2 class="text-2xl font-bold">Posts</h2>
@@ -73,40 +79,50 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">
                             Title
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                            class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell">
                             Category
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                            class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell">
                             Status
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                            class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell">
                             Date
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                            class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell">
                             Likes
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">
                             Actions
                         </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @if (!empty($posts))
+
                         @foreach ($posts as $post)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div
-                                            class="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center">
-                                            <i data-lucide="file-text" class="w-5 h-5 text-gray-500"></i>
+                                            class="flex-shrink-0 h-10 w-10 bg-[#F97316] rounded-md flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                                                <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                                                <path d="M10 9H8" />
+                                                <path d="M16 13H8" />
+                                                <path d="M16 17H8" />
+                                            </svg>
                                         </div>
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">{{ $post->title }}
@@ -116,13 +132,13 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">
                                     <span
-                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                         {{ $post->category->name }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap hidden md:table-cell">
                                     <span
-                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                         {{ $post->status }}
                                     </span>
                                 </td>
@@ -133,31 +149,22 @@
                                     {{ $post->likes->count() }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex justify-end space-x-2">
-                                        <button class="text-blue-600 hover:text-blue-900">
-                                            <i data-lucide="edit" class="w-5 h-5"></i>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-900">
-                                            <i data-lucide="trash-2" class="w-5 h-5"></i>
-                                        </button>
-
+                                    <div class="flex justify-end gap-5">
                                         <form class="mt-4" action="{{ route('blogs.destroy', ['id' => $post->id]) }}"
                                             method="POST">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit">
+                                            <button type="submit" title="Delete Post">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                     class="size-5">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                                 </svg>
-
                                             </button>
                                         </form>
-
                                         <form class="mt-4" action="{{ route('blogs.edit', $post) }}" method="GET">
-                                            <button type="submit">
+                                            <button type="submit" title="Edit Post">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                     class="size-5">

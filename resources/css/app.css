@@ -7,7 +7,7 @@
     text-wrap: balance;
   }
 }
-
+/* #E6750D */
 :root {
   --site-navy: #111827;
   --site-black: #1e1e1e;
@@ -16,6 +16,48 @@
   --accent-hover: #8482dc;
   --dark-accent: #2d2727;
   --dark-hover-accent: #514747;
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("../fonts/OpenSans/OpenSans-VariableFont_wdth,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "OpenSans";
+  src: url("../fonts/OpenSans/OpenSans-Italic-VariableFont_wdth,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "OpenSansCondensed";
+  src: url("../fonts/OpenSans/static/OpenSans_Condensed-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "OpenSansCondensed";
+  src: url("../fonts/OpenSans/static/OpenSans_Condensed-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "OpenSansCondensed";
+  src: url("../fonts/OpenSans/static/OpenSans_Condensed-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "OpenSansCondensed";
+  src: url("../fonts/OpenSans/static/OpenSans_Condensed-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
 }
 
 *,
@@ -45,6 +87,8 @@ img {
   height: 100%;
 }
 body {
+  font-family: "OpenSans", sans-serif;
+  overflow-x: hidden;
   font-size: 16px;
   font-weight: 400;
 }
@@ -131,3 +175,46 @@ p {
   transition: all 300ms ease-out;
 }
 /* side-nav */
+
+/* general-sidebar */
+#general-sidebar-menu {
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  transition-property: all;
+  transition-duration: 200ms;
+  /* pointer-events: none; */
+}
+#general-sidebar-menu.open {
+  visibility: visible;
+  opacity: 1;
+  /* pointer-events: auto; */
+}
+#general-sidebar-nav {
+  transform: translateX(550px);
+  opacity: 0;
+  visibility: hidden;
+  transition-property: all;
+  transition-duration: 200ms;
+  /* pointer-events: none; */
+}
+#general-sidebar-nav.open {
+  transform: translateX(0px);
+  opacity: 1;
+  visibility: visible;
+  /* pointer-events: auto; */
+}
+/* general-sidebar */
+
+/* landing page  */
+.small-post h3 {
+  font-size: 0.875rem;
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+}
+.small-post span.badge {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+/* landing page  */
