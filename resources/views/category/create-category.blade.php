@@ -1,4 +1,7 @@
 <x-app-layout title="Create category">
+    @foreach ($errors->all() as $error)
+        <x-toasts.danger :message="$error" />
+    @endforeach
     <div>
         <div class="bg-white rounded-lg shadow-xl w-full mx-4">
             <div class="flex justify-between items-center border-b px-6 py-4">

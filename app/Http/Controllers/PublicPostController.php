@@ -21,14 +21,17 @@ class PublicPostController extends Controller
         if ($request->filled('search')) {
             $query->where('title', 'like', '%' . $request->search . '%');
         }
+        $categories = Category::withCount([
+            'posts' => function ($query) {
+                $query->where('status', 'published');
+            }
+        ])->get();
 
         $sort = $request->input('sort', 'newest');
         $direction = $sort === 'oldest' ? 'asc' : 'desc';
         $query->orderBy('created_at', $direction);
 
         $blogs = $query->paginate(6)->withQueryString();
-
-        $categories = Category::all();
 
         return view('home', compact('blogs', 'categories'));
     }

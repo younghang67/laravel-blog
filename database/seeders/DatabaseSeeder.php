@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,15 +28,14 @@ class DatabaseSeeder extends Seeder
         // Create other roles if needed
         User::factory()->create([
             'name' => 'Rusan',
-            'email' => 'editor@example.com',
-            'role' => 'author',
-            'password' => bcrypt('admin'),
+            'email' => 'asdf@gmail.com',
+            'role' => 'admin',
+            'password' => Hash::make('asdf'),
             'email_verified_at' => now(),
         ]);
 
         $this->call([
-            CategorySeeder::class,
-            BlogPostSeeder::class
+            CategorySeeder::class
         ]);
     }
 }

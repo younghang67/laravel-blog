@@ -8,7 +8,7 @@ use App\Models\User;
 
 class Post extends Model
 {
-    protected $fillable = ['user_id', 'category_id', 'title', 'content', 'image_url', 'status'];
+    protected $fillable = ['user_id', 'category_id', 'title', 'content', 'image_url', 'status', 'slug'];
 
     public function getImageUrlAttribute($value)
     {

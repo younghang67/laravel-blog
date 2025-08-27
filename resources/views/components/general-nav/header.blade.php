@@ -8,36 +8,29 @@
                 <span class="text-xl font-bold">BLOGX</span>
             </div>
         </a>
-        <nav class="hidden md:flex items-center space-x-10 text-gray-600">
-            <a href="{{ route('blogs.archive', ['category' => 'technology']) }}"
-                class="hover:text-accent transition-colors">Technology</a>
-            <a href="{{ route('blogs.archive', ['category' => 'travel']) }}"
-                class="hover:text-accent transition-colors">Travel</a>
-            <a href="{{ route('blogs.archive', ['category' => 'food']) }}"
-                class="hover:text-accent transition-colors">Food</a>
-            <a href="{{ route('blogs.archive', ['category' => 'entertainment']) }}"
-                class="hover:text-accent transition-colors">Entertainment</a>
-            <a href="{{ route('blogs.archive', ['category' => 'health-fitness']) }}"
-                class="hover:text-accent transition-colors">Health</a>
-            <div>
-                @if (Route::has('login'))
-                    <nav class="flex items-center justify-end font-semibold gap-4">
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="text-white bg-accent px-9 py-2 rounded-md">
-                                Dashboard
-                            </a>
-                        @endauth
-                    </nav>
-                @endif
+
+        <form class="w-[500px]">
+            <label for="default-search"
+                class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input type="search" id="default-search"
+                    class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:border-gray-300 active:border-gray-300"
+                    placeholder="Search" required />
 
             </div>
-        </nav>
-        <div class="md:hidden">
-            <div class="space-y-1.5 cursor-pointer">
-                <span class="block w-6 h-0.5 bg-gray-600"></span>
-                <span class="block w-6 h-0.5 bg-gray-600"></span>
-                <span class="block w-6 h-0.5 bg-gray-600"></span>
-            </div>
-        </div>
+        </form>
+        <button id="general-nav-menu-open-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6 cursor-pointer">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
     </div>
 </header>

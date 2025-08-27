@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>BlogX</title>
+    <title>{{ $title ?? 'BLOGX' }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -250,7 +250,7 @@
 
 </head>
 
-<body class="font-sans text-gray-900 antialiased">
+<body class="font-sans text-gray-900 antialiased relative">
     <div class="login-container">
         <div class="logo">
             <div class="logo-circle"><img class="object-cover" src="{{ asset('/images/blogx-logo.png') }}"
