@@ -10,13 +10,17 @@ document.addEventListener("DOMContentLoaded", () => {
     sidebarNav.classList.add("open");
   };
 
+  const closeMenu = () => {
+    sidebarMenu.classList.remove("open");
+    sidebarNav.classList.remove("open");
+  };
+
   opnBtn.addEventListener("click", () => {
     sidebarMenu.classList.add("open");
     setTimeout(showMenuNav, 200);
   });
 
-  clsBtn.addEventListener("click", () => {
-    sidebarMenu.classList.remove("open");
-    sidebarNav.classList.remove("open");
-  });
+  clsBtn.addEventListener("click", closeMenu);
+
+  window.addEventListener("scroll", closeMenu);
 });

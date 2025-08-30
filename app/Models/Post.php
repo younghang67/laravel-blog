@@ -19,6 +19,10 @@ class Post extends Model
         return $value ? asset('storage/' . $value) : null;
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 
     public function user(): BelongsTo
     {

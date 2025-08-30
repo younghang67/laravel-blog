@@ -147,6 +147,7 @@ class PostController extends Controller
                 'remove_image' => 'sometimes|boolean',
             ]);
 
+            
             if ($request->hasFile('image_url')) {
                 if ($post->image_url) {
                     Storage::disk('public')->delete($post->image_url);

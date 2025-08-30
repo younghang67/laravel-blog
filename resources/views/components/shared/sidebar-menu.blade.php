@@ -9,8 +9,13 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
             </svg>
         </button>
-        <ul class="mt-4">
-            <li>text</li>
+        <ul class="mt-4 ml-2 space-y-3">
+            <li>
+                <a href="{{ route('blog.all.list') }}" class="inline font-semibold"> All Blogs</a>
+            </li>
+            <li>
+                <a href="latest-posts" class="inline font-semibold">Latest Posts</a>
+            </li>
         </ul>
     </div>
 </div>

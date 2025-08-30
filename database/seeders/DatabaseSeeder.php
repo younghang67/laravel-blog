@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Create other roles if needed
         User::factory()->create([
             'name' => 'Rusan',
             'email' => 'asdf@gmail.com',

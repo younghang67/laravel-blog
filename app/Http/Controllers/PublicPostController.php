@@ -10,6 +10,36 @@ class PublicPostController extends Controller
 {
     public function index(Request $request)
     {
+        $categories = Category::withCount([
+            'posts' => function ($query) {
+                $query->where('status', 'published');
+            }
+        ])->get();
+
+        $latestBlogs = Post::query()
+            ->with('user', 'category')
+            ->where('status', 'published')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('home', compact('categories', 'latestBlogs'));
+    }
+
+    public function allLatestPost()
+    {
+        $blogs = Post::query()
+            ->with('user', 'category')
+            ->where('status', 'published')
+            ->latest()
+            ->paginate(6)
+            ->withQueryString();
+
+        return view('latest-posts', compact('blogs'));
+    }
+
+    public function postFilter(Request $request)
+    {
         $query = Post::query()
             ->with('user', 'category')
             ->where('status', 'published');
@@ -31,9 +61,9 @@ class PublicPostController extends Controller
         $direction = $sort === 'oldest' ? 'asc' : 'desc';
         $query->orderBy('created_at', $direction);
 
-        $blogs = $query->paginate(6)->withQueryString();
+        $blogs = $query->paginate(perPage: 6)->withQueryString();
 
-        return view('home', compact('blogs', 'categories'));
+        return view('blog-list', compact('blogs', 'categories'));
     }
 
     public function show(Post $blog)
@@ -46,9 +76,15 @@ class PublicPostController extends Controller
             ->take(3)
             ->get();
 
+        $blog->load('user', 'category', 'comments.user', 'comments.children.user');
+
+
+        $totalComments = $blog->comments()->count();
+
         return view('single-blog', [
-            'blog' => $blog->load('user', 'category'),
-            'relatedPosts' => $relatedPosts
+            'blog' => $blog,
+            'relatedPosts' => $relatedPosts,
+            'totalComments' => $totalComments,
         ]);
     }
     public function archive(Request $request, ?Category $category = null)
@@ -71,5 +107,22 @@ class PublicPostController extends Controller
         return view('archive', compact('blogs', 'categories', 'category'));
     }
 
+    public function postPerCat(Request $request)
+    {
+        $request->validate([
+            'category_id' => 'required|integer|exists:categories,id',
+        ]);
 
+        $categoryId = $request->category_id;
+
+        $posts = Post::where('category_id', $categoryId)
+            ->with('user', 'category')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Return JSON response for AJAX
+        return response()->json([
+            'posts' => $posts
+        ]);
+    }
 }

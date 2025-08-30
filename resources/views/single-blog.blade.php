@@ -1,6 +1,8 @@
 <x-general-layout title="{{ $blog->title }}">
+    @if (session('success'))
+        <x-toasts.success :message="session('success')" />
+    @endif
     <main class="bg-white font-sans text-gray-800 antialiased">
-
         <section class="py-12 md:py-16 bg-gray-50">
             <div class="container mx-auto px-4">
                 <div class="max-w-3xl mx-auto">
@@ -28,12 +30,13 @@
         <section class="py-8">
             <div class="container mx-auto px-4">
                 <div class="max-w-4xl mx-auto">
-                    <img src="{{ $blog->image_url }}" alt="Featured image" class="w-full h-auto rounded-lg shadow-md">
+                    <img src="{{ $blog->image_url ? $blog->image_url : '/images/placeholder-image.png' }}"
+                        alt="Featured image" class="w-full h-auto max-h-[500px] object-cover rounded-lg shadow-md">
                 </div>
             </div>
         </section>
 
-        <!-- Article Content -->
+        {{-- Article Content  --}}
         <section class="py-8">
             <div class="container mx-auto px-4">
                 <div class="max-w-3xl mx-auto">
@@ -44,6 +47,8 @@
                 </div>
             </div>
         </section>
+
+        {{-- likes  --}}
         <div class="container mx-auto px-4">
             <div class="max-w-5xl mx-auto">
                 <div class="flex items-center gap-2 mt-4">
@@ -75,8 +80,8 @@
                             @foreach ($relatedPosts as $relatedPost)
                                 <article
                                     class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
-                                    <img src="{{ $relatedPost->image_url }}" alt="Blog post"
-                                        class="w-full h-48 object-cover">
+                                    <img src="{{ $relatedPost->image_url ? $relatedPost->image_url : '/images/placeholder-image.png' }}"
+                                        alt="Blog post" class="w-full h-48 object-cover">
                                     <div class="p-6">
                                         <div class="flex flex-wrap items-center mb-2">
                                             <span
@@ -103,5 +108,8 @@
                 </div>
             </div>
         </section>
+
+        <x-shared.commentSection :blog="$blog" :comments="$blog->comments" :totalComments="$totalComments" />
+
     </main>
 </x-general-layout>

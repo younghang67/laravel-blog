@@ -1,6 +1,6 @@
 <x-general-layout>
     <section class="container mx-auto px-4 py-8">
-        <form class="flex flex-wrap flex-col gap-4" action="{{ route('home') }}" method="GET">
+        <form class="flex flex-wrap flex-col gap-4" action="{{ route('blog.all.list') }}" method="GET">
             <div class="flex flex-wrap gap-4">
                 <div class="flex-1 min-w-[200px]">
                     <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Filter by
@@ -37,7 +37,7 @@
                     <button class="px-6 py-2 bg-accent hover:bg-accentHover text-white rounded-lg transition-colors"
                         type="submit">Filter</button>
                     @if (request()->anyFilled(['category', 'search', 'sort']))
-                        <a href="{{ route('home') }}"
+                        <a href="{{ route('blog.all.list') }}"
                             class="px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors">
                             Clear
                         </a>
@@ -53,7 +53,7 @@
                     <article
                         class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
                         <a href="{{ route('blogs.single', $blog) }}">
-                            <img src="{{ $blog->image_url }}" alt="Blog post" class="w-full h-48 object-cover">
+                            <img src="{{ $blog->image_url ? $blog->image_url : '/images/placeholder-image.png' }}" alt="Blog post" class="w-full h-48 object-cover">
                             <div class="p-6">
                                 <div class="flex items-center mb-4">
                                     <span
